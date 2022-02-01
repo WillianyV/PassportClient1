@@ -24,6 +24,6 @@
         <h1>
             Client
         </h1>
-        <a href="/redirect">login com a API</a>
+        <a href="{{ route("sso.redirect") }}">login com a API</a>
     </body>
 </html>
