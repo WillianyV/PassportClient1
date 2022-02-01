@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\SSO;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 
@@ -55,6 +57,24 @@ class SSOController extends Controller
             'Authorization' => 'Bearer '.$accessToken,
         ])->get(config('auth.app_url').'api/user');
         
-        return $response->json();
+        $user_array =  $response->json();
+        try {
+            $email = $user_array['email'];
+        } catch (\Throwable $th) {
+            return redirect("login")->withErrors("Falha ao pegar informações do Login! Tente Novamente.");
+        }
+
+        $user = User::where("email", $email)->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name'  => $user_array['name'],
+                'email' => $user_array['email'],
+            ]);
+        }
+
+        Auth::login($user);
+
+        return redirect(route("home"));
     }
 }
