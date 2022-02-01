@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\SSO\SSOController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get("/sso/redirect", [SSOController::class, 'redirect'])->name("sso.redirect");
+Route::get("/callback", [SSOController::class, 'callback'])->name("sso.callback");
+Route::get("/sso/connect", [SSOController::class, 'connect'])->name("sso.connect");
