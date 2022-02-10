@@ -15,6 +15,12 @@ class SSOController extends Controller
     {
         $request->session()->put('state', $state = Str::random(40));
 
+        /** TBM PD SER FEITA DESSA FORMA */
+        // $state = Str::random(40)
+        // session([
+        //     'state' => $state
+        // ]);
+
         $query = http_build_query([
             'client_id' => config('auth.client_id'),
             'redirect_uri' => config('auth.redirect_uri'),
@@ -34,6 +40,16 @@ class SSOController extends Controller
             strlen($state) > 0 && $state === $request->state,
             InvalidArgumentException::class
         );
+
+        /** NA AULA DE Beer and Code, ELES NÃO VERIFICAM E PEGAM O STATE
+         * POIS ELES FAZEM DA SEGUNDA FORMA NO REDIREC
+         */
+        // $state = $request->session()->pull('state');
+
+        // throw_unless(
+        //     strlen($state) > 0 && $state === $request->state,
+        //     InvalidArgumentException::class
+        // );
     
         $response = Http::asForm()->post(config('auth.app_url').'oauth/token', [
             'grant_type' => 'authorization_code',
@@ -75,6 +91,7 @@ class SSOController extends Controller
 
         Auth::login($user);
 
-        return redirect(route("home"));
+        // return redirect(route("home"));
+        return redirect(config('auth.app_url'));
     }
 }
