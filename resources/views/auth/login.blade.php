@@ -8,7 +8,7 @@
                 <img src="{{ asset('img/login.svg') }}">
             </div>
             <div class="d-grid gap-2 col-12 mx-auto">
-                <a href="{{ route("sso.redirect") }}" class="btn btn-danger btn-sm">Login</a>
+                <a hidden href="{{ route("sso.redirect") }}" class="btn btn-danger btn-sm" id="id_login">Login</a>
             </div>            
         </div>
     </div>
